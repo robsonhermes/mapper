@@ -34,12 +34,6 @@
   "peerDependencies": {
     "reflect-metadata": "^0.1.13"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run test"
-    }
-  },
   "prettier": {
     "printWidth": 80,
     "semi": true,
