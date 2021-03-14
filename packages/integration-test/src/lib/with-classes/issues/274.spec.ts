@@ -2,14 +2,35 @@ import { AutoMap } from '@automapper/classes';
 import { setupClasses } from '../../setup.spec';
 
 describe('Issue 274', () => {
-  class SearchConditionDto {
+  enum SearchConditionType {
+    AND = 'AND',
+    OR = 'OR',
+  }
+
+  class SearchConditionElement {
     @AutoMap()
-    condition: string;
+    name: string;
+  }
+
+  class SearchConditionElementDto {
+    @AutoMap()
+    name: string;
+  }
+
+  class SearchConditionDto {
+    @AutoMap(() => SearchConditionElementDto)
+    texts: SearchConditionElementDto[];
+
+    @AutoMap(() => String)
+    conditionType: SearchConditionType;
   }
 
   class SearchCondition {
+    @AutoMap(() => SearchConditionElement)
+    texts: SearchConditionElement[];
+
     @AutoMap()
-    condition: string;
+    conditionType: SearchConditionType;
   }
 
   class SearchConditionsDto {
@@ -77,26 +98,41 @@ describe('Issue 274', () => {
   const [mapper] = setupClasses('274');
 
   beforeEach(() => {
+    mapper.createMap(SearchConditionElementDto, SearchConditionElement);
     mapper.createMap(SearchConditionDto, SearchCondition);
     mapper.createMap(SearchConditionsDto, SearchConditions);
     mapper.createMap(SearchDto, Search);
   });
 
   it('should map', () => {
-    const dto = new SearchDto();
-    dto.docType = 'docType';
-    dto.hasUpdateTotalSearch = true;
-    dto.searchName = 'searchName';
-    dto.sectionElement = 'sectionElement';
-
-    const condition = new SearchConditionDto();
-    condition.condition = 'condition';
-
-    dto.conditions = new SearchConditionsDto();
-    dto.conditions.excludeTags = condition;
-    dto.conditions.excludeTexts = condition;
-    dto.conditions.includeTags = condition;
-    dto.conditions.includeTexts = condition;
+    const dto = {
+      conditions: {
+        includeTexts: {
+          conditionType: 'OR',
+          texts: [
+            {
+              name: 'Portfolio Turnover:',
+            },
+          ],
+        },
+        excludeTexts: {
+          conditionType: 'OR',
+          texts: [],
+        },
+        includeTags: {
+          conditionType: 'OR',
+          texts: [],
+        },
+        excludeTags: {
+          conditionType: 'OR',
+          texts: [],
+        },
+      },
+      sectionElement: '',
+      docType: '',
+      searchName: 'SECT_Portfolio_Turnover',
+      hasUpdateTotalSearch: true,
+    };
 
     const search = mapper.map(dto, Search, SearchDto);
     console.log(search);
