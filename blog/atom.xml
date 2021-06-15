@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://automapperts.netlify.app/blog</id>
+    <title>AutoMapper TypeScript Blog</title>
+    <updated>2015-10-25T23:29:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://automapperts.netlify.app/blog"/>
+    <subtitle>AutoMapper TypeScript Blog</subtitle>
+    <icon>https://automapperts.netlify.app/img/favicon.png</icon>
+</feed>
